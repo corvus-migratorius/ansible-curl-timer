@@ -17,7 +17,9 @@ None
 Role Variables
 --------------
 
-None
+`kuma_port`
+
+`kuma_server_ip`
 
 Dependencies
 ------------
@@ -29,7 +31,9 @@ Example Playbook
 
 ```yaml
 roles:
-    - role: genlab.template
+    - role: genlab.kuma_curl_timer
+      kuma_port: 3001
+      kuma_server_ip: xxx.xxx.xxx
 ```
 
 License

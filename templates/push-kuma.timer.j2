@@ -1,0 +1,12 @@
+[Unit]
+Description=push to uptime kuma every minute
+Requires=push-kuma.service
+
+[Timer]
+Unit=push-kuma.service
+OnCalendar=*-*-* *:*:00
+AccuracySec=1us
+Persistent=true
+
+[Install]
+WantedBy=timers.target
