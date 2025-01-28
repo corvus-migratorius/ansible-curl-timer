@@ -7,7 +7,7 @@
       ansible.builtin.stat:
         path: "/etc/systemd/system/push-kuma.service"
       register: service_file
-      
+
     - name: "Assert service file exists"
       ansible.builtin.assert:
         that:
