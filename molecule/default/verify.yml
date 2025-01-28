@@ -2,10 +2,27 @@
 - name: Verify
   hosts: all
   gather_facts: false
-  any_errors_fatal: true
-
   tasks:
-    - name: "Mock verification task"
-      changed_when: false
-      ansible.builtin.command:
-        cmd: "true"
+    - name: "Check service file exists"
+      ansible.builtin.stat:
+        path: "/etc/systemd/system/push-kuma.service"
+      register: service_file
+      
+    - name: "Assert service file exists"
+      ansible.builtin.assert:
+        that:
+          - service_file.stat.exists == true
+        success_msg: "Service file exists"
+        fail_msg: "Service file does not exist"
+
+    - name: "Check timer file exists"
+      ansible.builtin.stat:
+        path: "/etc/systemd/system/push-kuma.timer"
+      register: timer_file
+
+    - name: "Assert timer file exists"
+      ansible.builtin.assert:
+        that:
+          - timer_file.stat.exists == true
+        success_msg: "Timer file exists"
+        fail_msg: "Timer file doesn not exist"
