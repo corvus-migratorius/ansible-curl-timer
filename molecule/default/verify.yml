@@ -25,4 +25,4 @@
         that:
           - timer_file.stat.exists == true
         success_msg: "Timer file exists"
-        fail_msg: "Timer file doesn not exist"
+        fail_msg: "Timer file does not exist"
