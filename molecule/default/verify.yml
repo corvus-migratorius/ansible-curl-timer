@@ -2,29 +2,28 @@
 - name: Verify
   hosts: all
   gather_facts: false
+
   tasks:
-    - name: "Check that the service file exists"
-      register: service_file
-      failed_when: service_file.stat.exists == false
-      ansible.builtin.stat:
-        path: "/etc/systemd/system/push-kuma.service"
+    - name: "Check the timer status"
+      register: timer
+      ansible.builtin.systemd:
+        name: "curl-scheduled.timer"
 
-    - name: "Check that the timer file exists"
-      register: timer_file
-      failed_when: timer_file.stat.exists == false
-      ansible.builtin.stat:
-        path: "/etc/systemd/system/push-kuma.timer"
+    - name: "Assert that the timer is running"
+      ansible.builtin.assert:
+        that:
+          - timer.status.ActiveState == "active"
+        success_msg: "Timer is running"
+        fail_msg: "Unexpected timer state: '{{ timer.status.ActiveState }}'"
 
-    # - name: "Assert service file exists"
-    #   ansible.builtin.assert:
-    #     that:
-    #       - service_file.stat.exists == true
-    #     success_msg: "Service file exists"
-    #     fail_msg: "Service file does not exist"
+    - name: "Check the service status"
+      register: service
+      ansible.builtin.systemd:
+        name: "curl-scheduled.service"
 
-    # - name: "Assert timer file exists"
-    #   ansible.builtin.assert:
-    #     that:
-    #       - timer_file.stat.exists == true
-    #     success_msg: "Timer file exists"
-    #     fail_msg: "Timer file does not exist"
+    - name: "Assert that the service exited with a 0/SUCCESS status"
+      ansible.builtin.assert:
+        that:
+          - 'service.status.ExecMainStatus == "0"'
+        success_msg: "Service has exited with a 0/SUCCESS status"
+        fail_msg: "Unexpected service status code: '{{ service.status.ExecMainStatus }}'"
