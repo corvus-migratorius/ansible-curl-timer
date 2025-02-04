@@ -1,4 +1,33 @@
 ---
-- name: "Mock task"
-  ansible.builtin.debug:
-    msg: "hello, world!"
+- name: "Install curl (Debian derivatives)"
+  when: ansible_os_family == "Debian"
+  ansible.builtin.apt:
+    name: curl
+    state: present
+    update_cache: true
+
+- name: "Install curl (RHEL derivatives)"
+  when: ansible_os_family == "RedHat"
+  ansible.builtin.dnf:
+    name: curl
+    state: present
+
+- name: "Create systemd service files"
+  ansible.builtin.template:
+    src: "push-kuma.service.j2"
+    dest: "/etc/systemd/system/push-kuma.service"
+    mode: "0660"
+
+- name: "Create systemd timer files"
+  ansible.builtin.template:
+    src: "push-kuma.timer.j2"
+    dest: "/etc/systemd/system/push-kuma.timer"
+    mode: "0660"
+
+- name: "Make sure that the timer units are enabled and started"
+  become: true
+  ansible.builtin.systemd:
+    name: "push-kuma.timer"
+    state: started
+    enabled: true
+    daemon_reload: true

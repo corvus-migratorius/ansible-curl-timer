@@ -1,0 +1,22 @@
+[Unit]
+Description=Push server status to Uptime Kuma
+Wants=push-kuma.timer
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/curl http://{{ kuma_server_ip }}:{{ kuma_port }}/api/push/{{ kuma_token }}
+Restart=no 
+
+# Security hardening
+ProtectSystem=strict
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectKernelTunables=true
+ProtectClock=yes
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.targer
