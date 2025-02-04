@@ -1,13 +1,7 @@
-template
+curl-scheduled
 =========
 
-Template for Ansible role monorepos.
-
-⚠️ Do not forget to update:
-
-- `meta/main.yml`
-- Conda/Mamba manifests
-- this README =)
+Configure curl to run on schedule by deploying a systemd service + timer. Useful for sending heartbeats.
 
 Requirements
 ------------

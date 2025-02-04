@@ -14,20 +14,20 @@
 
 - name: "Create systemd service files"
   ansible.builtin.template:
-    src: "push-kuma.service.j2"
-    dest: "/etc/systemd/system/push-kuma.service"
+    src: "curl-scheduled.service.j2"
+    dest: "/etc/systemd/system/curl-scheduled.service"
     mode: "0660"
 
 - name: "Create systemd timer files"
   ansible.builtin.template:
-    src: "push-kuma.timer.j2"
-    dest: "/etc/systemd/system/push-kuma.timer"
+    src: "curl-scheduled.timer.j2"
+    dest: "/etc/systemd/system/curl-scheduled.timer"
     mode: "0660"
 
 - name: "Make sure that the timer units are enabled and started"
   become: true
   ansible.builtin.systemd:
-    name: "push-kuma.timer"
+    name: "curl-scheduled.timer"
     state: started
     enabled: true
     daemon_reload: true

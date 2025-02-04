@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: kuma_curl_timer
+  role_name: curl_scheduled
   namespace: genlab
   author: "Alexander Gorelyshev"
   company: "Genlab, LLC"
