@@ -1,9 +1,32 @@
 ---
 - name: Converge
   hosts: all
+
+  pre_tasks:
+    - name: "Create test directory"
+      ansible.builtin.file:
+        path: "/test"
+        state: directory
+        mode: "0664"
+
+    - name: "Create a test file"
+      ansible.builtin.lineinfile:
+        path: "/test/index.html"
+        create: true
+        mode: "0664"
+        line: "OK"
+
+    - name: "Simulate a remote HTTP server on localhost"
+      changed_when: false
+      async: 1
+      poll: 0
+      args:
+        chdir: "/test"
+      ansible.builtin.shell:
+        cmd: nohup python3 -m http.server 8080 </dev/null >/dev/null 2>&1 &
+        executable: /bin/bash
+
   roles:
-    - role: genlab.kuma_curl_timer
-      kuma_port: 3001
-      kuma_server_ip: 123.456.789.123
-      # kics-scan ignore-line
-      kuma_token: "lTYacvPprx"
+    - role: genlab.curl_scheduled
+      url: "http://127.0.0.1:8080"
+      schedule: "minutely"

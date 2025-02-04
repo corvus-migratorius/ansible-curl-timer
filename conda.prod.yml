@@ -1,5 +1,5 @@
 ---
-name: ansible-role-template
+name: ansible-curl-scheduled
 channels:
   - conda-forge
 dependencies:
