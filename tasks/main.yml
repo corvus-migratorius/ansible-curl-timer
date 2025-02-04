@@ -1,4 +1,17 @@
 ---
+- name: "Install curl (Debian derivatives)"
+  when: ansible_os_family == "Debian"
+  ansible.builtin.apt:
+    name: curl
+    state: present
+    update_cache: true
+
+- name: "Install curl (RHEL derivatives)"
+  when: ansible_os_family == "RedHat"
+  ansible.builtin.dnf:
+    name: curl
+    state: present
+
 - name: "Create systemd service files"
   ansible.builtin.template:
     src: "push-kuma.service.j2"
