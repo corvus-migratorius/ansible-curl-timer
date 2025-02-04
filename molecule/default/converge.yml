@@ -4,5 +4,6 @@
   roles:
     - role: genlab.kuma_curl_timer
       kuma_port: 3001
-      kuma_server_ip: xxx.xxx.xxx
+      kuma_server_ip: 123.456.789.123
+      # kics-scan ignore-line
       kuma_token: "kkkkkkkkkkkkkk"
