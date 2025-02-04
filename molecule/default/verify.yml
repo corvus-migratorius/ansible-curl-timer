@@ -3,26 +3,28 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: "Check service file exists"
+    - name: "Check that the service file exists"
+      register: service_file
+      failed_when: service_file.stat.exists == false
       ansible.builtin.stat:
         path: "/etc/systemd/system/push-kuma.service"
-      register: service_file
 
-    - name: "Assert service file exists"
-      ansible.builtin.assert:
-        that:
-          - service_file.stat.exists == true
-        success_msg: "Service file exists"
-        fail_msg: "Service file does not exist"
-
-    - name: "Check timer file exists"
+    - name: "Check that the timer file exists"
+      register: timer_file
+      failed_when: timer_file.stat.exists == false
       ansible.builtin.stat:
         path: "/etc/systemd/system/push-kuma.timer"
-      register: timer_file
 
-    - name: "Assert timer file exists"
-      ansible.builtin.assert:
-        that:
-          - timer_file.stat.exists == true
-        success_msg: "Timer file exists"
-        fail_msg: "Timer file does not exist"
+    # - name: "Assert service file exists"
+    #   ansible.builtin.assert:
+    #     that:
+    #       - service_file.stat.exists == true
+    #     success_msg: "Service file exists"
+    #     fail_msg: "Service file does not exist"
+
+    # - name: "Assert timer file exists"
+    #   ansible.builtin.assert:
+    #     that:
+    #       - timer_file.stat.exists == true
+    #     success_msg: "Timer file exists"
+    #     fail_msg: "Timer file does not exist"
