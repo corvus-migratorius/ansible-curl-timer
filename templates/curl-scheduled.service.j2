@@ -1,11 +1,11 @@
 [Unit]
-Description=Push server status to Uptime Kuma
-Wants=push-kuma.timer
+Description=Run an HTTP request via curl
+Wants=curl-scheduled.timer
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/curl http://{{ kuma_server_ip }}:{{ kuma_port }}/api/push/{{ kuma_token }}
+ExecStart=/usr/bin/curl {{ curl_args }} {{ url }}
 Restart=no 
 
 # Security hardening

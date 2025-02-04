@@ -1,0 +1,12 @@
+[Unit]
+Description=Trigger a curl command
+Requires=curl-scheduled.service
+
+[Timer]
+Unit=curl-scheduled.service
+OnCalendar={{ schedule }}
+AccuracySec=1us
+Persistent=true
+
+[Install]
+WantedBy=timers.target
